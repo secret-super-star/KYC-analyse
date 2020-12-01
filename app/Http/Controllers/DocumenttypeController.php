@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
-use App\Models\Customer;
 use App\Models\Documenttype;
 use Illuminate\Http\Request;
 
-class CustomerController extends Controller
+class DocumenttypeController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,8 +15,6 @@ class CustomerController extends Controller
     public function index()
     {
         //
-        $customers = Customer::all();
-        return view('customers/index', compact('customers'));
     }
 
     /**
@@ -29,9 +25,6 @@ class CustomerController extends Controller
     public function create()
     {
         //
-        $categoriss = Category::all();
-        $documenttypes = Documenttype::all();
-        return view('customers.create', compact('categoriss', 'documenttypes'));
     }
 
     /**
@@ -43,19 +36,15 @@ class CustomerController extends Controller
     public function store(Request $request)
     {
         //
-        dump($request->all());
-        Customer::create($request->all());
-
-        return back();
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Customer  $customer
+     * @param  \App\Models\Documenttype  $documenttype
      * @return \Illuminate\Http\Response
      */
-    public function show(Customer $customer)
+    public function show(Documenttype $documenttype)
     {
         //
     }
@@ -63,10 +52,10 @@ class CustomerController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Customer  $customer
+     * @param  \App\Models\Documenttype  $documenttype
      * @return \Illuminate\Http\Response
      */
-    public function edit(Customer $customer)
+    public function edit(Documenttype $documenttype)
     {
         //
     }
@@ -75,10 +64,10 @@ class CustomerController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Customer  $customer
+     * @param  \App\Models\Documenttype  $documenttype
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Customer $customer)
+    public function update(Request $request, Documenttype $documenttype)
     {
         //
     }
@@ -86,10 +75,10 @@ class CustomerController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Customer  $customer
+     * @param  \App\Models\Documenttype  $documenttype
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Customer $customer)
+    public function destroy(Documenttype $documenttype)
     {
         //
     }

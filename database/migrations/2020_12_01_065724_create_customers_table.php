@@ -19,13 +19,14 @@ class CreateCustomersTable extends Migration
             $table->string('address');
             $table->date('DOB');
             $table->string('phone');
+            $table->char('sex');
             $table->string('email')->unique();
             $table->string('line_id')->unique();
             $table->string('facebook_id')->unique();
             $table->string('twitter_id')->unique();
             $table->string('telegram_id')->unique();
             $table->string('youtube_id')->unique();
-            $table->integer('document_id');
+            $table->integer('documenttype_id');
             $table->string('documents');
             $table->string('ipaddress');
             $table->integer('category_id');
