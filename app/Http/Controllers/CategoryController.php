@@ -3,10 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
-use App\Models\Customer;
 use Illuminate\Http\Request;
 
-class CustomerController extends Controller
+class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,8 +15,6 @@ class CustomerController extends Controller
     public function index()
     {
         //
-        $customers = Customer::all();
-        return view('customers/index', compact('customers'));
     }
 
     /**
@@ -28,8 +25,6 @@ class CustomerController extends Controller
     public function create()
     {
         //
-        $categoriss = Category::all();
-        return view('customers.create', compact('categoriss'));
     }
 
     /**
@@ -46,10 +41,10 @@ class CustomerController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Customer  $customer
+     * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function show(Customer $customer)
+    public function show(Category $category)
     {
         //
     }
@@ -57,10 +52,10 @@ class CustomerController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Customer  $customer
+     * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function edit(Customer $customer)
+    public function edit(Category $category)
     {
         //
     }
@@ -69,10 +64,10 @@ class CustomerController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Customer  $customer
+     * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Customer $customer)
+    public function update(Request $request, Category $category)
     {
         //
     }
@@ -80,10 +75,10 @@ class CustomerController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Customer  $customer
+     * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Customer $customer)
+    public function destroy(Category $category)
     {
         //
     }
