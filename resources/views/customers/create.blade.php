@@ -1,7 +1,13 @@
 @extends('layouts.app')
 
 @section('styles')
+    <link rel="stylesheet" href="{{asset('plugins/boostrap-tag-input/css/tagsinput.css')}}">
 
+    <style>
+        .bootstrap-tagsinput .badge {
+            margin-right: 5px;
+        }
+    </style>
 @endsection
 
 @section('content')
@@ -16,7 +22,7 @@
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Dashbaord</a></li>
-                            <li class="breadcrumb-item"><a href="{{route('customers.index')}}">Customers</a></li>
+                            <li class="breadcrumb-item"><a href="{{route('users.index')}}">Customers</a></li>
                             <li class="breadcrumb-item active">New</li>
                         </ol>
                     </div><!-- /.col -->
@@ -31,7 +37,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card card-body">
-                            <form action="{{route('customers.store')}}" method="POST" enctype="multipart/form-data">
+                            <form action="{{route('users.store')}}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <div class="row">
 
@@ -150,6 +156,14 @@
                                         </div>
                                     </div>
 
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="tag_quote">Tags</label>
+                                            <input data-role="tagsinput" name="tags" id="tag_quote" type="text" class="form-control">
+
+                                        </div>
+                                    </div>
+
                                     <div class="col-md-12">
                                         <button class="btn btn-primary btn-sm float-right">Save</button>
                                     </div>
@@ -167,6 +181,7 @@
 
 @section('scripts')
     <script src="{{asset('plugins/bs-custom-file-input/bs-custom-file-input.min.js')}}"></script>
+    <script src="{{asset('plugins/boostrap-tag-input/js/tagsinput.js')}}"></script>
     <script>
         $(function() {
             bsCustomFileInput.init();

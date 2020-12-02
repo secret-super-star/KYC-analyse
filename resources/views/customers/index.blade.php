@@ -4,6 +4,7 @@
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
     <link rel="stylesheet" href="{{asset('plugins/datatables-bs4/css/dataTables.bootstrap4.min.css')}}">
     <link rel="stylesheet" href="{{asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css')}}">
+    <link rel="stylesheet" href="{{asset('plugins/datatables-buttons/css/buttons.bootstrap4.min.css')}}">
     <style>
         a {
             color: unset;
@@ -15,6 +16,10 @@
 
         .form-group label {
             margin-bottom: 0;
+        }
+
+        table td {
+            vertical-align: middle !important;
         }
     </style>
 @endsection
@@ -45,7 +50,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card card-body">
-                            <form id="filter_form" action="{{route('customers.store')}}" method="POST"
+                            <form id="filter_form" action="{{route('users.store')}}" method="POST"
                                   enctype="multipart/form-data">
                                 @csrf
                                 <div class="row">
@@ -193,7 +198,8 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @foreach($customers as $key=>$customer)
+
+                                @forelse($customers as $key=>$customer)
                                     <tr>
                                         <td>{{++$key}}</td>
                                         <td>{{$customer->name}}</td>
@@ -211,21 +217,19 @@
                                         <td>{{$customer->ipaddress}}</td>
                                         <td>{{$customer->category->name}}</td>
                                         <td>
-                                            <buttton class="btn btn-sm btn-success">
-                                                View <a class="fa fa-eye action"
-                                                        href="{{ route('customers.show', $customer->id) }}"></a>
-                                            </buttton>
-                                            <buttton class="btn btn-sm btn-warning">
-                                                Edit <a class="fa fa-pen action"
-                                                        href="{{ route('customers.show', $customer->id) }}"></a>
-                                            </buttton>
-                                            <buttton class="btn btn-sm btn-danger">
-                                                Delete <a class="fa fa-trash action"
-                                                          href="{{ route('customers.show', $customer->id) }}"></a>
-                                            </buttton>
+                                            <a class="btn btn-sm btn-success" href="{{ route('users.show', $customer->id) }}">
+                                                View <i class="fa fa-eye "></i>
+                                            </a>
+                                            <a class="btn btn-sm btn-warning" href="{{ route('users.show', $customer->id) }}">
+                                                Edit <i class="fa fa-pen "></i>
+                                            </a>
+                                            <a class="btn btn-sm btn-danger" href="{{ route('users.show', $customer->id) }}">
+                                                Delete <i class="fa fa-trash "></i>
+                                            </a>
                                         </td>
                                     </tr>
-                                @endforeach
+                                @empty
+                                @endforelse
                                 </tbody>
                             </table>
                         </div>
@@ -240,6 +244,11 @@
 @section('scripts')
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
     <script src="{{asset('plugins/datatables/jquery.dataTables.min.js')}}"></script>
+    <script src="{{asset('plugins/datatables-buttons/js/dataTables.buttons.min.js')}}"></script>
+    <script src="{{asset('plugins/datatables-buttons/js/buttons.bootstrap4.min.js')}}"></script>
+    <script src="{{asset('plugins/datatables-buttons/js/buttons.flash.min.js')}}"></script>
+    <script src="{{asset('plugins/datatables-buttons/js/buttons.html5.min.js')}}"></script>
+    <script src="{{asset('plugins/datatables-buttons/js/buttons.print.min.js')}}"></script>
     <script src="{{asset('plugins/datatables-bs4/js/dataTables.bootstrap4.min.js')}}"></script>
     <script src="{{asset('plugins/datatables-responsive/js/dataTables.responsive.min.js')}}"></script>
     <script src="{{asset('plugins/datatables-responsive/js/responsive.bootstrap4.min.js')}}"></script>
@@ -249,60 +258,82 @@
 
         $(function () {
             var datatable = $("#customer_table").DataTable({
-                "autoWidth": true,
+                dom: 'Bfrtip',
+                "searching": false,
+                buttons: [
+                    {
+                        extend: 'csv',
+                        footer: false,
+                        exportOptions: {
+                            columns: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14]
+                        }
+                    },
+                ]
             });
 
-            function drawtable(data) {
+            function drawtable(data)
+            {
                 console.log(data);
-                datatable.destroy();
+                if(data.length > 0) {
+                    datatable.destroy();
 
-                let txt = ""
-                for (let i = 0; i < data.length; i++) {
-                    let key = i + 1
-                    txt += "<tr>";
-                    txt += "<td>" + key + "</td>"
-                    txt += "<td>" + (data[i]['name'] ? data[i]['name'] : '') + "</td>"
-                    txt += "<td>account_" + (data[i]['id'] ? data[i]['id'] : '') + "</td>"
-                    txt += "<td>" + (data[i]['address'] ? data[i]['address'] : '') + "</td>"
-                    txt += "<td>" + (data[i]['sex'] ? data[i]['sex'] : '') + "</td>"
-                    txt += "<td>" + (data[i]['phone'] ? data[i]['phone'] : '') + "</td>"
-                    txt += "<td>" + (data[i]['email'] ? data[i]['email'] : '') + "</td>"
-                    txt += "<td>" + (data[i]['line_id'] ? data[i]['line_id'] : '') + "</td>"
-                    txt += "<td>" + (data[i]['facebook_id'] ? data[i]['facebook_id'] : '') + "</td>"
-                    txt += "<td>" + (data[i]['twitter_id'] ? data[i]['twitter_id'] : '') + "</td>"
-                    txt += "<td>" + (data[i]['telegram_id'] ? data[i]['telegram_id'] : '') + "</td>"
-                    txt += "<td>" + (data[i]['youtube_id'] ? data[i]['youtube_id'] : '') + "</td>"
-                    txt += "<td>" + (data[i]['documenttype']['name'] ? data[i]['documenttype']['name'] : '') + "</td>"
-                    txt += "<td>" + (data[i]['ipaddress'] ? data[i]['ipaddress'] : '') + "</td>"
-                    txt += "<td>" + (data[i]['category']['name'] ? data[i]['category']['name'] : '') + "</td>"
-                    txt += `<td>
-                                <buttton class="btn btn-sm btn-success">
-                                    View <a class="fa fa-eye action"
-                                            href="{{ route('customers.show', $customer->id) }}"></a>
-                                </buttton>
-                                <buttton class="btn btn-sm btn-warning">
-                                    Edit <a class="fa fa-pen action"
-                                            href="{{ route('customers.show', $customer->id) }}"></a>
-                                </buttton>
-                                <buttton class="btn btn-sm btn-danger">
-                                    Delete <a class="fa fa-trash action"
-                                              href="{{ route('customers.show', $customer->id) }}"></a>
-                                </buttton>
+                    let txt = ""
+                    for (let i = 0; i < data.length; i++) {
+                        let key = i + 1
+                        txt += "<tr>";
+                        txt += "<td>" + key + "</td>"
+                        txt += "<td>" + (data[i]['name'] ? data[i]['name'] : '') + "</td>"
+                        txt += "<td>account_" + (data[i]['id'] ? data[i]['id'] : '') + "</td>"
+                        txt += "<td>" + (data[i]['address'] ? data[i]['address'] : '') + "</td>"
+                        txt += "<td>" + (data[i]['sex'] ? data[i]['sex'] : '') + "</td>"
+                        txt += "<td>" + (data[i]['phone'] ? data[i]['phone'] : '') + "</td>"
+                        txt += "<td>" + (data[i]['email'] ? data[i]['email'] : '') + "</td>"
+                        txt += "<td>" + (data[i]['line_id'] ? data[i]['line_id'] : '') + "</td>"
+                        txt += "<td>" + (data[i]['facebook_id'] ? data[i]['facebook_id'] : '') + "</td>"
+                        txt += "<td>" + (data[i]['twitter_id'] ? data[i]['twitter_id'] : '') + "</td>"
+                        txt += "<td>" + (data[i]['telegram_id'] ? data[i]['telegram_id'] : '') + "</td>"
+                        txt += "<td>" + (data[i]['youtube_id'] ? data[i]['youtube_id'] : '') + "</td>"
+                        txt += "<td>" + (data[i]['documenttype']['name'] ? data[i]['documenttype']['name'] : '') + "</td>"
+                        txt += "<td>" + (data[i]['ipaddress'] ? data[i]['ipaddress'] : '') + "</td>"
+                        txt += "<td>" + (data[i]['category']['name'] ? data[i]['category']['name'] : '') + "</td>"
+                        txt += `<td>
+                                <a class="btn btn-sm btn-success" href="/users/`+data[i]['id']+`">
+                                    View <i class="fa fa-eye"></i>
+                                </a>
+                                <a class="btn btn-sm btn-warning" href="/users/`+data[i]['id']+`">
+                                    Edit <i class="fa fa-pen"></i>
+                                </a>
+                                <a class="btn btn-sm btn-danger" href="/users/`+data[i]['id']+`">
+                                    Delete <i class="fa fa-trash"></i>
+                                </a>
                             </td>`;
-                    txt += "</tr>";
+                        txt += "</tr>";
+                    }
+
+                    $('#customer_table tbody').html(txt);
+                    datatable = $("#customer_table").DataTable({
+                        "autoWidth": true,
+                    });
+                } else {
+                    datatable.clear().draw();
                 }
-
-                $('#customer_table tbody').html(txt);
-                datatable = $("#customer_table").DataTable({
-                    "autoWidth": true,
-                });
-
             }
+
+            $('.clear-filter').click(function (e) {
+                let form_data = $('#filter_form').serialize();
+
+                $.ajax({
+                    type: "POST",
+                    url: '{{route('getallcustomers')}}',
+                    data: form_data,
+                }).done(function (res) {
+                    drawtable(res);
+                });
+            })
 
             $('#filter_form').submit(function (e) {
                 e.preventDefault()
                 let form_data = $(this).serialize();
-                console.log(form_data)
 
                 $.ajax({
                     type: "POST",

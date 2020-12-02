@@ -17,9 +17,24 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
+        'password',
         'name',
         'email',
-        'password',
+        'address',
+        'DOB',
+        'phone',
+        'sex',
+        'line_id',
+        'facebook_id',
+        'twitter_id',
+        'telegram_id',
+        'youtube_id',
+        'documenttype_id',
+        'documents',
+        'ipaddress',
+        'category_id',
+        'note',
+        'labels',
     ];
 
     /**
@@ -40,4 +55,14 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function documenttype()
+    {
+        return $this->belongsTo('App\Models\Documenttype');
+    }
+
+    public function category()
+    {
+        return $this->belongsTo('App\Models\Category');
+    }
 }
