@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Documenttype;
 use App\Models\User;
 use Illuminate\Http\Request;
+use function GuzzleHttp\Promise\all;
 
 class UserController extends Controller
 {
@@ -119,6 +120,17 @@ class UserController extends Controller
         $customers->where('category_id', $request->category_id);
         $customers->where('documenttype_id', $request->documenttype_id);
         $customers->with('documenttype')->with('category');
+        if (isset($request->name)) $customers->where('name', 'like', '%'.$request->name.'%');
+        if (isset($request->address)) $customers->where('address', 'like', '%'.$request->address.'%');
+        if (isset($request->DOB)) $customers->where('DOB', $request->DOB);
+        if (isset($request->phone)) $customers->where('phone', 'like', '%'.$request->phone.'%');
+        if (isset($request->email)) $customers->where('email', $request->email);
+        if (isset($request->line_id)) $customers->where('line_id', $request->line_id);
+        if (isset($request->facebook_id)) $customers->where('facebook_id', $request->facebook_id);
+        if (isset($request->twitter_id)) $customers->where('twitter_id', $request->twitter_id);
+        if (isset($request->telegram_id)) $customers->where('telegram_id', $request->telegram_id);
+        if (isset($request->youtube_id)) $customers->where('youtube_id', $request->youtube_id);
+        if (isset($request->ipaddress)) $customers->where('ipaddress', 'like', '%'.$request->ipaddress.'%');
         $customers = $customers->get();
         return response()->json($customers);
     }

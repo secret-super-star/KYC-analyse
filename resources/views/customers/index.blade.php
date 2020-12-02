@@ -184,6 +184,7 @@
                                     <th>Account ID</th>
                                     <th>Address</th>
                                     <th>Sex</th>
+                                    <th>Birthday</th>
                                     <th>Phone</th>
                                     <th>Email</th>
                                     <th>Line</th>
@@ -206,6 +207,7 @@
                                         <td>account_{{$customer->id}}</td>
                                         <td>{{$customer->address}}</td>
                                         <td>{{$customer->sex}}</td>
+                                        <td>{{$customer->DOB}}</td>
                                         <td>{{$customer->phone}}</td>
                                         <td>{{$customer->email}}</td>
                                         <td>{{$customer->line_id}}</td>
@@ -286,6 +288,7 @@
                         txt += "<td>account_" + (data[i]['id'] ? data[i]['id'] : '') + "</td>"
                         txt += "<td>" + (data[i]['address'] ? data[i]['address'] : '') + "</td>"
                         txt += "<td>" + (data[i]['sex'] ? data[i]['sex'] : '') + "</td>"
+                        txt += "<td>" + (data[i]['DOB'] ? data[i]['DOB'] : '') + "</td>"
                         txt += "<td>" + (data[i]['phone'] ? data[i]['phone'] : '') + "</td>"
                         txt += "<td>" + (data[i]['email'] ? data[i]['email'] : '') + "</td>"
                         txt += "<td>" + (data[i]['line_id'] ? data[i]['line_id'] : '') + "</td>"
@@ -312,7 +315,17 @@
 
                     $('#customer_table tbody').html(txt);
                     datatable = $("#customer_table").DataTable({
-                        "autoWidth": true,
+                        dom: 'Bfrtip',
+                        "searching": false,
+                        buttons: [
+                            {
+                                extend: 'csv',
+                                footer: false,
+                                exportOptions: {
+                                    columns: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14]
+                                }
+                            },
+                        ]
                     });
                 } else {
                     datatable.clear().draw();
