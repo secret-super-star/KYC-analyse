@@ -28,4 +28,14 @@ class Customer extends Model
         'note',
         'labels',
     ];
+
+    public function documenttype()
+    {
+        return $this->belongsTo('App\Models\Documenttype');
+    }
+
+    public function category()
+    {
+        return $this->belongsTo('App\Models\Category');
+    }
 }

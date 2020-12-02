@@ -22,3 +22,5 @@ Auth::routes();
 Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
 
 Route::resource('customers', App\Http\Controllers\CustomerController::class);
+
+Route::post('searchcustomers', [App\Http\Controllers\CustomerController::class, 'search'])->name('searchcustomers');
