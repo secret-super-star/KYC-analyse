@@ -251,6 +251,8 @@
     <script src="{{asset('plugins/datatables-buttons/js/buttons.flash.min.js')}}"></script>
     <script src="{{asset('plugins/datatables-buttons/js/buttons.html5.min.js')}}"></script>
     <script src="{{asset('plugins/datatables-buttons/js/buttons.print.min.js')}}"></script>
+    <script src="{{asset('plugins/datatables-buttons/js/pdfmake.min.js')}}"></script>
+    <script src="{{asset('plugins/datatables-buttons/js/vfs_fonts.js')}}"></script>
     <script src="{{asset('plugins/datatables-bs4/js/dataTables.bootstrap4.min.js')}}"></script>
     <script src="{{asset('plugins/datatables-responsive/js/dataTables.responsive.min.js')}}"></script>
     <script src="{{asset('plugins/datatables-responsive/js/responsive.bootstrap4.min.js')}}"></script>
@@ -265,6 +267,15 @@
                 buttons: [
                     {
                         extend: 'csv',
+                        footer: false,
+                        exportOptions: {
+                            columns: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14]
+                        }
+                    },
+                    {
+                        extend: 'pdf',
+                        orientation: 'landscape',
+                        pageSize: 'LEGAL',
                         footer: false,
                         exportOptions: {
                             columns: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14]
