@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@section('title', 'Show Customer')
 @section('styles')
     <link rel="stylesheet" href="{{asset('plugins/ekko-lightbox/ekko-lightbox.css')}}">
     <style>
@@ -51,7 +51,7 @@
                                         </p>
                                     </div>
                                     <div class="col-md-6">
-                                        <strong><i class="fas fa-book mr-1"></i> Birthday</strong>
+                                        <strong><i class="fa fa-birthday-cake mr-1"></i> Birthday</strong>
 
                                         <p class="text-muted">
                                             {{$customer->DOB}}
@@ -60,21 +60,21 @@
 
 
                                     <div class="col-md-6">
-                                        <strong><i class="fas fa-book mr-1"></i> Sex</strong>
+                                        <strong><i class="fas fa-venus-mars"></i> Sex</strong>
 
                                         <p class="text-muted">
                                             {{$customer->sex == "M" ? "Male" : "Female"}}
                                         </p>
                                     </div>
                                     <div class="col-md-6">
-                                        <strong><i class="fas fa-book mr-1"></i> Email</strong>
+                                        <strong><i class="fas fa-envelope mr-1"></i> Email</strong>
 
                                         <p class="text-muted">
                                             {{$customer->email}}
                                         </p>
                                     </div>
                                     <div class="col-md-12">
-                                        <strong><i class="fas fa-book mr-1"></i> Address</strong>
+                                        <strong><i class="fas fa-address-book mr-1"></i> Address</strong>
 
                                         <p class="text-muted">
                                             {{$customer->address}}
@@ -88,7 +88,7 @@
                                         </p>
                                     </div>
                                     <div class="col-md-12">
-                                        <strong><i class="fas fa-book mr-1"></i> ID Type</strong>
+                                        <strong><i class="fas fa-id-card mr-1"></i> ID Type</strong>
 
                                         <p class="text-muted">
                                             {{$customer->documenttype->name}}
@@ -102,28 +102,28 @@
                                         </p>
                                     </div>
                                     <div class="col-md-12">
-                                        <strong><i class="fas fa-book mr-1"></i> Facebook</strong>
+                                        <strong><i class="fab fa-facebook-square"></i> Facebook</strong>
 
                                         <p class="text-muted">
                                             {{$customer->facebook_id ?? '-'}}
                                         </p>
                                     </div>
                                     <div class="col-md-12">
-                                        <strong><i class="fas fa-book mr-1"></i> Twitter</strong>
+                                        <strong><i class="fab fa-twitter-square mr-1"></i> Twitter</strong>
 
                                         <p class="text-muted">
                                             {{$customer->twitter_id ?? '-'}}
                                         </p>
                                     </div>
                                     <div class="col-md-12">
-                                        <strong><i class="fas fa-book mr-1"></i> Youtube</strong>
+                                        <strong><i class="fab fa-youtube-square mr-1"></i> Youtube</strong>
 
                                         <p class="text-muted">
                                             {{$customer->youtube_id ?? "-"}}
                                         </p>
                                     </div>
                                     <div class="col-md-12">
-                                        <strong><i class="fas fa-book mr-1"></i> Tags</strong>
+                                        <strong><i class="fa fa-tags mr-1"></i> Tags</strong>
 
                                         <p class="text-muted">
                                             @forelse($tags as $tag)
