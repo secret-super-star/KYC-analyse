@@ -26,3 +26,5 @@ Route::resource('users', App\Http\Controllers\UserController::class);
 Route::post('searchcustomers', [App\Http\Controllers\UserController::class, 'search'])->name('searchcustomers');
 
 Route::post('getallcustomers', [App\Http\Controllers\UserController::class, 'searchall'])->name('getallcustomers');
+
+Route::post('searchtags', [App\Http\Controllers\TagController::class, 'searchtags'])->name('searchtags');

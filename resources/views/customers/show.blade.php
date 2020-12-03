@@ -122,6 +122,19 @@
                                             {{$customer->youtube_id ?? "-"}}
                                         </p>
                                     </div>
+                                    <div class="col-md-12">
+                                        <strong><i class="fas fa-book mr-1"></i> Tags</strong>
+
+                                        <p class="text-muted">
+                                            @forelse($tags as $tag)
+                                                <span class="badge badge-success">
+                                                    {{$tag->name}}
+                                                </span>
+                                            @empty
+                                            {{$customer->youtube_id ?? "-"}}
+                                            @endforelse
+                                        </p>
+                                    </div>
                                 </div>
 
                             </div>

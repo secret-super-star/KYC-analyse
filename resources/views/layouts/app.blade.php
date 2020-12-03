@@ -3,7 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Dashboard</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>{{ config('app.name', 'Laravel') }} - @yield('title')</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -43,6 +44,19 @@
             </li>
         </ul>
 
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item d-flex align-items-center">
+                <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
+                        document.getElementById('logout-form').submit();">
+                    {{ __('Logout') }}  <i class="fas fa-sign-out-alt"></i>
+                </a>
+
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                    @csrf
+                </form>
+            </li>
+        </ul>
+
     </nav>
     <!-- /.navbar -->
 
@@ -72,8 +86,8 @@
                     </li>
 
                     <li class="nav-item has-treeview">
-                        <a href="#" class="nav-link">
-                            <i class="nav-icon fas fa-tachometer-alt"></i>
+                        <a href="#" class="nav-link {{ request()->is('users') || request()->is('users/*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-users"></i>
                             <p>
                                 Customers
                                 <i class="right fas fa-angle-left"></i>
@@ -81,13 +95,13 @@
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="{{route('users.index')}}" class="nav-link">
+                                <a href="{{route('users.index')}}" class="nav-link {{ request()->is('users') ? 'active' : '' }}">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Customer Lists</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{route('users.create')}}" class="nav-link">
+                                <a href="{{route('users.create')}}" class="nav-link {{ request()->is('users/create') ? 'active' : '' }}">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Create New</p>
                                 </a>
@@ -148,6 +162,14 @@
 <script src="{{asset('dist/js/adminlte.js')}}"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="{{asset('dist/js/demo.js')}}"></script>
+
+<script>
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+</script>
 
 @yield('scripts')
 </body>

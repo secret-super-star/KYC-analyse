@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@section('title', 'Customers')
 
 @section('styles')
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
@@ -55,101 +56,104 @@
                                 @csrf
                                 <div class="row">
 
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
                                         <div class="form-group">
                                             <label for="customer_name">Name</label>
                                             <input type="text" name="name" id="customer_name"
                                                    class="form-control form-control-sm">
                                         </div>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
                                         <div class="form-group">
                                             <label for="customer_address">Address</label>
                                             <input type="text" name="address" id="customer_address"
                                                    class="form-control form-control-sm">
                                         </div>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
                                         <div class="form-group">
                                             <label for="customer_DOB">Birthday</label>
                                             <input type="date" name="DOB" id="customer_DOB"
                                                    class="form-control form-control-sm">
                                         </div>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
                                         <div class="form-group">
                                             <label for="customer_sex">Sex</label>
                                             <select name="sex" id="customer_sex" class="form-control form-control-sm">
+                                                <option value=""></option>
                                                 <option value="M">Male</option>
                                                 <option value="F">Female</option>
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
                                         <div class="form-group">
                                             <label for="customer_phone">Phone</label>
                                             <input type="text" name="phone" id="customer_phone"
                                                    class="form-control form-control-sm">
                                         </div>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
                                         <div class="form-group">
                                             <label for="customer_email">Email</label>
                                             <input type="email" name="email" id="customer_email"
                                                    class="form-control form-control-sm">
                                         </div>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
                                         <div class="form-group">
                                             <label for="customer_line">Line</label>
                                             <input type="text" name="line_id" id="customer_line"
                                                    class="form-control form-control-sm">
                                         </div>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
                                         <div class="form-group">
                                             <label for="customer_facebook">Facebook</label>
                                             <input type="text" name="facebook_id" id="customer_facebook"
                                                    class="form-control form-control-sm">
                                         </div>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
                                         <div class="form-group">
                                             <label for="customer_twitter">Twitter</label>
                                             <input type="text" name="twitter_id" id="customer_twitter"
                                                    class="form-control form-control-sm">
                                         </div>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
                                         <div class="form-group">
                                             <label for="customer_telegram">Telegram </label>
                                             <input type="text" name="telegram_id" id="customer_telegram"
                                                    class="form-control form-control-sm">
                                         </div>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
                                         <div class="form-group">
                                             <label for="customer_youtube">YouTube </label>
                                             <input type="text" name="youtube_id" id="customer_youtube"
                                                    class="form-control form-control-sm">
                                         </div>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
                                         <div class="form-group">
                                             <label for="customer_category">Category</label>
                                             <select name="category_id" id="customer_category"
                                                     class="form-control form-control-sm">
+                                                <option value=""></option>
                                                 @foreach($categoriss as $key=>$category)
                                                     <option value="{{$category->id}}">{{$category->name}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
                                         <div class="form-group">
                                             <label for="customer_id_type">ID Type</label>
                                             <select name="documenttype_id" id="customer_id_type"
                                                     class="form-control form-control-sm">
+                                                <option value=""></option>
                                                 @foreach($documenttypes as $key=>$documenttype)
                                                     <option
                                                         value="{{$documenttype->id}}">{{$documenttype->name}}</option>
@@ -157,7 +161,7 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
                                         <div class="form-group">
                                             <label for="customer_ip_address">Ip Address</label>
                                             <input type="text" name="ipaddress" id="customer_ip_address"
@@ -261,28 +265,31 @@
 
 
         $(function () {
-            var datatable = $("#customer_table").DataTable({
-                dom: 'Bfrtip',
-                "searching": false,
-                buttons: [
-                    {
-                        extend: 'csv',
-                        footer: false,
-                        exportOptions: {
-                            columns: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14]
-                        }
-                    },
-                    {
-                        extend: 'pdf',
-                        orientation: 'landscape',
-                        pageSize: 'LEGAL',
-                        footer: false,
-                        exportOptions: {
-                            columns: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14]
-                        }
-                    },
-                ]
-            });
+            function drawdatatable(){
+                return $("#customer_table").DataTable({
+                    dom: 'Bfrtip',
+                    "searching": false,
+                    buttons: [
+                        {
+                            extend: 'csv',
+                            footer: false,
+                            exportOptions: {
+                                columns: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14]
+                            }
+                        },
+                        {
+                            extend: 'pdf',
+                            orientation: 'landscape',
+                            pageSize: 'LEGAL',
+                            footer: false,
+                            exportOptions: {
+                                columns: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14]
+                            }
+                        },
+                    ]
+                });
+            }
+            var datatable = drawdatatable()
 
             function drawtable(data)
             {
@@ -325,19 +332,7 @@
                     }
 
                     $('#customer_table tbody').html(txt);
-                    datatable = $("#customer_table").DataTable({
-                        dom: 'Bfrtip',
-                        "searching": false,
-                        buttons: [
-                            {
-                                extend: 'csv',
-                                footer: false,
-                                exportOptions: {
-                                    columns: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14]
-                                }
-                            },
-                        ]
-                    });
+                    datatable = drawdatatable()
                 } else {
                     datatable.clear().draw();
                 }

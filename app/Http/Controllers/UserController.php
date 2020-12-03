@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Documenttype;
+use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Http\Request;
 use function GuzzleHttp\Promise\all;
@@ -36,8 +37,9 @@ class UserController extends Controller
     public function create()
     {
         $categoriss = Category::all();
+        $tags = $categoriss[0]->tag;
         $documenttypes = Documenttype::all();
-        return view('customers.create', compact('categoriss', 'documenttypes'));
+        return view('customers.create', compact('categoriss', 'documenttypes', 'tags'));
     }
 
     /**
@@ -59,11 +61,14 @@ class UserController extends Controller
         $documents = implode(', ', $documents);
 
         $customer_data = $request->all();
+        $tags = implode(', ', $request->labels);
         unset($customer_data['documents']);
+        unset($customer_data['labels']);
         $customer_data['documents'] = $documents;
+        $customer_data['labels'] = $tags;
         User::create($customer_data);
 
-        return back();
+        return back()->with('success', "New customer has been created.");
     }
 
     /**
@@ -75,7 +80,10 @@ class UserController extends Controller
     public function show(User $user)
     {
         $customer = $user;
-        return view('customers.show', compact('customer'));
+        $customer_tags = $customer->labels;
+        $customer_tags = explode(', ', $customer_tags);
+        $tags = Tag::whereIn('id', $customer_tags)->get();
+        return view('customers.show', compact('customer', 'tags'));
     }
 
     /**
@@ -115,11 +123,9 @@ class UserController extends Controller
     public function search(Request $request)
     {
         $customers = User::where('id', '>', 1);
-
-        $customers->where('sex', $request->sex);
-        $customers->where('category_id', $request->category_id);
-        $customers->where('documenttype_id', $request->documenttype_id);
-        $customers->with('documenttype')->with('category');
+        if (isset($request->sex)) $customers->where('sex', $request->sex);
+        if (isset($request->category_id)) $customers->where('category_id', $request->category_id);
+        if (isset($request->documenttype_id)) $customers->where('documenttype_id', $request->documenttype_id);
         if (isset($request->name)) $customers->where('name', 'like', '%'.$request->name.'%');
         if (isset($request->address)) $customers->where('address', 'like', '%'.$request->address.'%');
         if (isset($request->DOB)) $customers->where('DOB', $request->DOB);
@@ -131,6 +137,7 @@ class UserController extends Controller
         if (isset($request->telegram_id)) $customers->where('telegram_id', $request->telegram_id);
         if (isset($request->youtube_id)) $customers->where('youtube_id', $request->youtube_id);
         if (isset($request->ipaddress)) $customers->where('ipaddress', 'like', '%'.$request->ipaddress.'%');
+        $customers->with('documenttype')->with('category');
         $customers = $customers->get();
         return response()->json($customers);
     }
