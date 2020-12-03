@@ -10903,3 +10903,13 @@ a.text-dark:focus {
   }
 }
 
+.iti__flag {
+  background-image: url(/images/flags.png?416250f60d785a2e02f17e054d2e4e44);
+}
+
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .iti__flag {
+    background-image: url(/images/flags@2x.png?d429a5777afaf2fc349652e812e9bb11);
+  }
+}
+

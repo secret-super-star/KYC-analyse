@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="{{asset('plugins/select2/css/select2.min.css')}}">
     <link rel="stylesheet" href="{{asset('plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css')}}">
     <link rel="stylesheet" href="{{asset('plugins/toastr/toastr.min.css')}}">
+    <link rel="stylesheet" href="{{asset('plugins/intl-tel-input/css/intlTelInput.min.css')}}">
 
     <style>
         .bootstrap-tagsinput .badge {
@@ -70,9 +71,8 @@
                                                 <div class="col-md-3">
                                                     <div class="form-group">
                                                         <label for="customer_phone">Phone</label>
-                                                        <input type="text" name="phone" id="customer_phone"
-                                                               class="form-control"
-                                                               data-inputmask='"mask": "(+99) 999-9999"' data-mask>
+                                                        <input type="text" name="phone[full]" id="customer_phone"
+                                                               class="form-control">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-3">
@@ -257,6 +257,7 @@
     <script src="{{asset('plugins/select2/js/select2.full.min.js')}}"></script>
     <script src="{{asset('plugins/inputmask/min/jquery.inputmask.bundle.min.js')}}"></script>
     <script src="{{asset('plugins/toastr/toastr.min.js')}}"></script>
+    <script src="{{asset('plugins/intl-tel-input/js/intlTelInput.min.js')}}"></script>
     <script>
         function updatetags(data) {
             let txt = ""
@@ -270,6 +271,14 @@
 
         $(function () {
             bsCustomFileInput.init();
+            var phone_input = document.querySelector("#customer_phone");
+            var iti = window.intlTelInput(phone_input, {
+                hiddenInput: "full",
+                utilsScript: "/plugins/intl-tel-input/js/utils.js?1603274336113"
+            });
+
+            iti.setCountry("us");
+
 
             $('[data-mask]').inputmask()
 

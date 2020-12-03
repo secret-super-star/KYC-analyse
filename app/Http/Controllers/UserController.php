@@ -62,10 +62,13 @@ class UserController extends Controller
 
         $customer_data = $request->all();
         $tags = implode(', ', $request->labels);
+        $phone = $request['phone']['full'];
         unset($customer_data['documents']);
         unset($customer_data['labels']);
+        unset($customer_data['phone']);
         $customer_data['documents'] = $documents;
         $customer_data['labels'] = $tags;
+        $customer_data['phone'] = $phone;
         User::create($customer_data);
 
         return back()->with('success', "New customer has been created.");
