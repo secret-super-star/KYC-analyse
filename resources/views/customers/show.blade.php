@@ -148,6 +148,13 @@
                                             @endforelse
                                         </p>
                                     </div>
+                                    <div class="col-md-12">
+                                        <strong><i class="fa fa-network-wired mr-1"></i> Ip Address</strong>
+
+                                        <p class="text-muted">
+                                            {{$customer->ipaddress ?? "-"}}
+                                        </p>
+                                    </div>
                                 </div>
 
                             </div>
