@@ -76,6 +76,12 @@ class UserController extends Controller
             $customer_data['labels'] = $tags;
         }
 
+        if (isset($request->ipaddress)){
+            $ipaddress = implode(', ', $request->ipaddress);
+            unset($customer_data['ipaddress']);
+            $customer_data['ipaddress'] = $ipaddress;
+        }
+
         $phone = $request['phone']['full'];
         unset($customer_data['documents']);
         unset($customer_data['phone']);

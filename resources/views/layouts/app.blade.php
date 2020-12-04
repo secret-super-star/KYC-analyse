@@ -64,7 +64,7 @@
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
         <!-- Brand Logo -->
         <a href="{{route('dashboard')}}" class="brand-link text-center">
-            <span class="brand-text font-weight-light"> <strong>KYC</strong> Analyse</span>
+            <img src="{{asset('imgs/logo.png')}}" alt="" class="top-logo" width="100%">
         </a>
 
         <!-- Sidebar -->
@@ -85,7 +85,7 @@
                         </a>
                     </li>
 
-                    <li class="nav-item has-treeview">
+                    <li class="nav-item has-treeview {{ request()->is('users') || request()->is('users/*') ? 'menu-open' : '' }}">
                         <a href="#" class="nav-link {{ request()->is('users') || request()->is('users/*') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-users"></i>
                             <p>

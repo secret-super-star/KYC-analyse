@@ -185,14 +185,24 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="col-md-3">
-                                                    <div class="form-group">
-                                                        <label for="customer_ip_address">Ip Address</label>
-                                                        <input type="text" id="customer_ip_address" name="ipaddress" class="form-control" data-inputmask="'alias': 'ip'" data-mask="" im-insert="true">
-                                                        <span class="badge badge-primary addnewip">
-                                                            Add new +
-                                                        </span>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div class="form-group ipmessages mb-0">
+                                                        <label for="">Ip Address</label>
+                                                        <div class="input-group mb-0 ipaddress">
+                                                            <input type="text" name="ipaddress[]"
+                                                                   class="form-control form-control-sm "
+                                                                   data-inputmask="'alias': 'ip'" data-mask=""
+                                                                   im-insert="true">
+                                                            <div class="input-group-append remove-item">
+                                                                <span class="input-group-text"><i class="fas fa-times"></i></span>
+                                                            </div>
+                                                        </div>
                                                     </div>
+                                                    <span class="badge badge-primary addnewip">
+                                                            Add new +
+                                                    </span>
                                                 </div>
                                             </div>
                                         </div>
@@ -213,7 +223,8 @@
                                             <div class="form-group">
                                                 <label for="customer_id_type">ID Type</label>
                                                 <select class="select2bs4" data-placeholder="Select ID Type"
-                                                        style="width: 100%;" id="customer_id_type" name="documenttype_id">
+                                                        style="width: 100%;" id="customer_id_type"
+                                                        name="documenttype_id">
                                                     @foreach($documenttypes as $key=>$documenttype)
                                                         <option
                                                             value="{{$documenttype->id}}">{{$documenttype->name}}</option>
@@ -267,7 +278,7 @@
             let txt = ""
             $('#customer_tags').html('')
             for (let i = 0; i < data.length; i++) {
-                txt += "<option value='"+data[i]['id']+"'>"+data[i]['name']+"</option>"
+                txt += "<option value='" + data[i]['id'] + "'>" + data[i]['name'] + "</option>"
             }
             console.log(txt)
             $('#customer_tags').html(txt);
@@ -303,6 +314,19 @@
                 }).done(function (res) {
                     updatetags(res)
                 });
+            })
+
+            $('.addnewip').click(function () {
+                let clone_object = $('.ipaddress').clone().removeClass('ipaddress');
+                $(clone_object).find('input').val('').inputmask();
+                $('.ipmessages').append(clone_object);
+            })
+
+            $(document).on('click', '.remove-item', function () {
+                let parent = $(this).parent();
+                if(!$(parent).hasClass('ipaddress')) {
+                    $(parent).remove();
+                }
             })
 
             @if($message = Session::get('success'))
