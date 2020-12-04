@@ -50,6 +50,16 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        $customer_data = $request->all();
+        $documenttype_id = $request->documenttype_id;
+        $documenttype = Documenttype::find($documenttype_id);
+
+        if(!isset($documenttype)) {
+            $new_documenttype = Documenttype::create([
+                'name' => $documenttype_id
+            ]);
+        }
+
         $documents = array();
         foreach($request->file('documents') as $file)
         {
@@ -60,7 +70,6 @@ class UserController extends Controller
 
         $documents = implode(', ', $documents);
 
-        $customer_data = $request->all();
         $tags = implode(', ', $request->labels);
         $phone = $request['phone']['full'];
         unset($customer_data['documents']);
@@ -69,6 +78,7 @@ class UserController extends Controller
         $customer_data['documents'] = $documents;
         $customer_data['labels'] = $tags;
         $customer_data['phone'] = $phone;
+        $customer_data['documenttype_id'] = $new_documenttype->id;
         User::create($customer_data);
 
         return back()->with('success', "New customer has been created.");

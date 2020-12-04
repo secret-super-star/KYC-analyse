@@ -90,7 +90,7 @@
                                                                class="form-control" required>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-3">
+                                                <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="customer_email">Email</label>
                                                         <input type="email" name="email" id="customer_email"
@@ -171,8 +171,6 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="customer_tags">Tags</label>
-                                                        {{--                                                        <input data-role="tagsinput" name="tags" id="tag_quote" type="text"--}}
-                                                        {{--                                                               class="form-control">--}}
                                                         <select class="select2bs4" multiple="multiple"
                                                                 data-placeholder="Select a tag"
                                                                 style="width: 100%;" id="customer_tags" name="labels[]">
@@ -186,8 +184,7 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="customer_ip_address">Ip Address</label>
-                                                        <input type="text" name="ipaddress" id="customer_ip_address"
-                                                               class="form-control">
+                                                        <input type="text" id="customer_ip_address" name="ipaddress" class="form-control" data-inputmask="'alias': 'ip'" data-mask="" im-insert="true">
                                                     </div>
                                                 </div>
                                             </div>
@@ -208,8 +205,8 @@
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label for="customer_id_type">ID Type</label>
-                                                <select name="documenttype_id" id="customer_id_type"
-                                                        class="form-control">
+                                                <select class="select2bs4" data-placeholder="Select ID Type"
+                                                        style="width: 100%;" id="customer_id_type" name="documenttype_id">
                                                     @foreach($documenttypes as $key=>$documenttype)
                                                         <option
                                                             value="{{$documenttype->id}}">{{$documenttype->name}}</option>
@@ -283,7 +280,8 @@
             $('[data-mask]').inputmask()
 
             $('.select2bs4').select2({
-                theme: 'bootstrap4'
+                theme: 'bootstrap4',
+                tags: true,
             })
 
             $('#customer_category').change(function () {
