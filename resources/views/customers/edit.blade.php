@@ -43,8 +43,9 @@
         <section class="content">
             <div class="container-fluid">
 
-                <form action="{{route('users.store')}}" method="POST" enctype="multipart/form-data">
+                <form action="{{route('users.update', $customer->id)}}" method="POST" enctype="multipart/form-data">
                     @csrf
+                    @method('put')
                     <div class="row">
                         <div class="col-md-6">
                             <div class="row">
@@ -59,7 +60,7 @@
                                                     <div class="form-group">
                                                         <label for="customer_name">Name</label>
                                                         <input type="text" name="name" id="customer_name"
-                                                               class="form-control"
+                                                               class="form-control" value="{{$customer->name}}"
                                                                required>
                                                     </div>
                                                 </div>
@@ -67,8 +68,8 @@
                                                     <div class="form-group">
                                                         <label for="customer_sex">Sex</label>
                                                         <select name="sex" id="customer_sex" class="form-control">
-                                                            <option value="M">Male</option>
-                                                            <option value="F">Female</option>
+                                                            <option value="M" {!! $customer->sex == 'M' ? 'selected':'' !!}>Male</option>
+                                                            <option value="F" {!! $customer->sex == 'F' ? 'selected':'' !!}>Female</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -76,7 +77,7 @@
                                                     <div class="form-group">
                                                         <label for="customer_DOB">Birthday</label>
                                                         <input type="date" name="DOB" id="customer_DOB"
-                                                               class="form-control"
+                                                               class="form-control" value="{{date('Y-m-d', strtotime($customer->DOB))}}"
                                                                required>
                                                     </div>
                                                 </div>
@@ -85,7 +86,7 @@
                                                         <label for="customer_phone">Phone</label>
                                                         <br>
                                                         <input type="text" name="phone[full]" id="customer_phone"
-                                                               class="form-control">
+                                                               class="form-control" value="{{$customer->phone}}">
                                                     </div>
                                                 </div>
 
@@ -93,14 +94,14 @@
                                                     <div class="form-group">
                                                         <label for="customer_address">Address</label>
                                                         <input type="text" name="address" id="customer_address"
-                                                               class="form-control" required>
+                                                               class="form-control" value="{{$customer->address}}" required>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="customer_email">Email</label>
                                                         <input type="email" name="email" id="customer_email"
-                                                               class="form-control"
+                                                               class="form-control" value="{{$customer->email}}"
                                                                required>
                                                     </div>
                                                 </div>
@@ -118,35 +119,35 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="customer_line">Line</label>
-                                                        <input type="text" name="line_id" id="customer_line"
+                                                        <input type="text" name="line_id" id="customer_line" value="{{$customer->line_id}}"
                                                                class="form-control">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="customer_facebook">Facebook</label>
-                                                        <input type="text" name="facebook_id" id="customer_facebook"
+                                                        <input type="text" name="facebook_id" id="customer_facebook" value="{{$customer->facebook_id}}"
                                                                class="form-control">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="customer_twitter">Twitter</label>
-                                                        <input type="text" name="twitter_id" id="customer_twitter"
+                                                        <input type="text" name="twitter_id" id="customer_twitter" value="{{$customer->twitter_id}}"
                                                                class="form-control">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="customer_telegram">Telegram </label>
-                                                        <input type="text" name="telegram_id" id="customer_telegram"
+                                                        <input type="text" name="telegram_id" id="customer_telegram" value="{{$customer->telegram_id}}"
                                                                class="form-control">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="customer_youtube">YouTube </label>
-                                                        <input type="text" name="youtube_id" id="customer_youtube"
+                                                        <input type="text" name="youtube_id" id="customer_youtube" value="{{$customer->youtube_id}}"
                                                                class="form-control">
                                                     </div>
                                                 </div>
@@ -174,7 +175,7 @@
                                                         class="form-control">
                                                     @foreach($categoriss as $key=>$category)
                                                         <option
-                                                            value="{{$category->id}}">{{$category->name}}</option>
+                                                            value="{{$category->id}}" {!! $customer->category_id == $category->id ? 'selected':'' !!}>{{$category->name}}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -187,7 +188,7 @@
                                                         data-placeholder="Select a tag"
                                                         style="width: 100%;" id="customer_tags" name="labels[]">
                                                     @foreach($tags as $tag)
-                                                        <option value="{{$tag->id}}">{{$tag->name}}</option>
+                                                        <option value="{{$tag->id}}" {!! in_array($tag->id, explode(', ', $customer->labels)) ? 'selected':'' !!}>{{$tag->name}}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -198,15 +199,18 @@
                                         <div class="col-xl-4 col-lg-6 col-6">
                                             <div class="form-group ipmessages mb-0">
                                                 <label for="">Ip Address</label>
-                                                <div class="input-group mb-0 ipaddress">
-                                                    <input type="text" name="ipaddress[]"
-                                                           class="form-control form-control-sm "
-                                                           data-inputmask="'alias': 'ip'" data-mask=""
-                                                           im-insert="true">
-                                                    <div class="input-group-append remove-item">
-                                                        <span class="input-group-text"><i class="fas fa-times"></i></span>
+                                                @foreach(explode(', ', $customer->ipaddress) as $key=>$ipaddress)
+                                                    <div class="input-group mb-0 {!! $key == 0 ? 'ipaddress':'' !!}">
+                                                        <input type="text" name="ipaddress[]"
+                                                               class="form-control form-control-sm "
+                                                               data-inputmask="'alias': 'ip'" data-mask=""
+                                                               im-insert="true" value="{{$ipaddress}}">
+                                                        <div class="input-group-append remove-item">
+                                                            <span class="input-group-text"><i class="fas fa-times"></i></span>
+                                                        </div>
                                                     </div>
-                                                </div>
+                                                @endforeach
+
                                             </div>
                                             <span class="badge badge-primary addnewip">
                                                             Add new +
@@ -215,7 +219,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="card">
+                            <div class="card" hidden>
                                 <div class="card-header">
                                     Customer Document:
                                 </div>
@@ -230,7 +234,7 @@
                                                         name="documenttype_id">
                                                     @foreach($documenttypes as $key=>$documenttype)
                                                         <option
-                                                            value="{{$documenttype->id}}">{{$documenttype->name}}</option>
+                                                            value="{{$documenttype->id}}" {!! $customer->documenttype_id == $documenttype->id ? 'selected':'' !!}>{{$documenttype->name}}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -242,7 +246,7 @@
                                                     <div class="custom-file">
                                                         <input type="file" class="custom-file-input"
                                                                id="customer_documents"
-                                                               name="documents[]" multiple required>
+                                                               name="documents[]" multiple>
                                                         <label class="custom-file-label" for="article-featured-image">Choose
                                                             file</label>
                                                     </div>
@@ -295,8 +299,7 @@
                 utilsScript: "/plugins/intl-tel-input/js/utils.js?1603274336113"
             });
 
-            iti.setCountry("us");
-
+            iti.setNumber('{{$customer->phone}}');
 
             $('[data-mask]').inputmask()
 

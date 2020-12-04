@@ -117,7 +117,7 @@ class UserController extends Controller
     public function edit(User $user)
     {
         $categoriss = Category::all();
-        $tags = $categoriss[0]->tag;
+        $tags = $user->category->tag;
         $documenttypes = Documenttype::all();
         $customer = $user;
         return view('customers.edit', compact('customer', 'categoriss', 'documenttypes', 'tags'));
@@ -132,7 +132,50 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+        $customer_data = $request->all();
+        $documenttype_id = $request->documenttype_id;
+        $new_documenttype = Documenttype::find($documenttype_id);
+
+        if(!isset($new_documenttype)) {
+            $new_documenttype = Documenttype::create([
+                'name' => $documenttype_id
+            ]);
+        }
+
+        if($request->hasFile('documents')) {
+            $documents = array();
+            foreach($request->file('documents') as $file)
+            {
+                $name = time().'_'.$file->getClientOriginalName();
+                $file->move(public_path().'/uploads/', $name);
+                $documents[] = $name;
+            }
+
+            $documents = implode(', ', $documents);
+            unset($customer_data['documents']);
+            $customer_data['documents'] = $documents;
+        }
+
+
+        if (isset($request->labels)){
+            $tags = implode(', ', $request->labels);
+            unset($customer_data['labels']);
+            $customer_data['labels'] = $tags;
+        }
+
+        if (isset($request->ipaddress)){
+            $ipaddress = implode(', ', $request->ipaddress);
+            unset($customer_data['ipaddress']);
+            $customer_data['ipaddress'] = $ipaddress;
+        }
+
+        $phone = $request['phone']['full'];
+        unset($customer_data['phone']);
+        $customer_data['phone'] = $phone;
+        $customer_data['documenttype_id'] = $new_documenttype->id;
+        $user->update($customer_data);
+
+        return back()->with('success', "New customer has been updated.");
     }
 
     /**
