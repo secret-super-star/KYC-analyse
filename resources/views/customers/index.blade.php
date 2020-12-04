@@ -226,10 +226,10 @@
                                             <a class="btn btn-sm btn-success" href="{{ route('users.show', $customer->id) }}">
                                                 View <i class="fa fa-eye "></i>
                                             </a>
-                                            <a class="btn btn-sm btn-warning" href="{{ route('users.show', $customer->id) }}">
+                                            <a class="btn btn-sm btn-warning" href="{{ route('users.edit', $customer->id) }}">
                                                 Edit <i class="fa fa-pen "></i>
                                             </a>
-                                            <a class="btn btn-sm btn-danger" href="{{ route('users.show', $customer->id) }}">
+                                            <a class="btn btn-sm btn-danger" href="#">
                                                 Delete <i class="fa fa-trash "></i>
                                             </a>
                                         </td>
