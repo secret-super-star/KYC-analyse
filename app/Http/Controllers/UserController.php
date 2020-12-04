@@ -52,9 +52,9 @@ class UserController extends Controller
     {
         $customer_data = $request->all();
         $documenttype_id = $request->documenttype_id;
-        $documenttype = Documenttype::find($documenttype_id);
+        $new_documenttype = Documenttype::find($documenttype_id);
 
-        if(!isset($documenttype)) {
+        if(!isset($new_documenttype)) {
             $new_documenttype = Documenttype::create([
                 'name' => $documenttype_id
             ]);
