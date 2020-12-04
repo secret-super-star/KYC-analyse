@@ -28,3 +28,7 @@ Route::post('searchcustomers', [App\Http\Controllers\UserController::class, 'sea
 Route::post('getallcustomers', [App\Http\Controllers\UserController::class, 'searchall'])->name('getallcustomers');
 
 Route::post('searchtags', [App\Http\Controllers\TagController::class, 'searchtags'])->name('searchtags');
+
+Route::resource('bonus', App\Http\Controllers\BonusController::class);
+
+Route::resource('notes', App\Http\Controllers\CustomernoteController::class);

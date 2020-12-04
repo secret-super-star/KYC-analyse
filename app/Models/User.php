@@ -65,4 +65,14 @@ class User extends Authenticatable
     {
         return $this->belongsTo('App\Models\Category');
     }
+
+    public function bonus()
+    {
+        return $this->hasMany('App\Models\Bonus');
+    }
+
+    public function notes()
+    {
+        return $this->hasMany('App\Models\Customernote');
+    }
 }

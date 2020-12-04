@@ -104,8 +104,10 @@ class UserController extends Controller
         $customer = $user;
         $customer_tags = $customer->labels;
         $customer_tags = explode(', ', $customer_tags);
+        $bonuses = $user->bonus;
+        $notes = $user->notes;
         $tags = Tag::whereIn('id', $customer_tags)->get();
-        return view('customers.show', compact('customer', 'tags'));
+        return view('customers.show', compact('customer', 'tags', 'bonuses', 'notes'));
     }
 
     /**
