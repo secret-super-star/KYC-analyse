@@ -12,4 +12,9 @@ class Ipaddress extends Model
     protected $fillable = [
         'ipaddress',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User');
+    }
 }

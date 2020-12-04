@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Documenttype;
+use App\Models\Ipaddress;
 use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -24,10 +25,19 @@ class UserController extends Controller
     public function index()
     {
         $customers = User::all()->except(1);
-        $ipaddress = $customers[0]->ipaddress;
         $categoriss = Category::all();
         $documenttypes = Documenttype::all();
-        return view('customers/index', compact('customers', 'categoriss', 'documenttypes'));
+
+        $ipaddresses = Ipaddress::select('ipaddress')->groupBy('ipaddress')->get();
+//        $ip_ids = array();
+        foreach ($ipaddresses as $ipaddress)
+        {
+            $user_ids = Ipaddress::where('ipaddress', $ipaddress->ipaddress)->get()->pluck('user_id');
+            $users = User::whereIn('id', $user_ids)->get()->sortBy('name');
+            $ipaddress['user'] = $users;
+        }
+
+        return view('customers/index', compact('customers', 'categoriss', 'documenttypes', 'ipaddresses'));
     }
 
     /**
