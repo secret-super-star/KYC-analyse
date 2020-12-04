@@ -24,6 +24,7 @@ class UserController extends Controller
     public function index()
     {
         $customers = User::all()->except(1);
+        $ipaddress = $customers[0]->ipaddress;
         $categoriss = Category::all();
         $documenttypes = Documenttype::all();
         return view('customers/index', compact('customers', 'categoriss', 'documenttypes'));
@@ -45,7 +46,7 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -54,32 +55,25 @@ class UserController extends Controller
         $documenttype_id = $request->documenttype_id;
         $new_documenttype = Documenttype::find($documenttype_id);
 
-        if(!isset($new_documenttype)) {
+        if (!isset($new_documenttype)) {
             $new_documenttype = Documenttype::create([
                 'name' => $documenttype_id
             ]);
         }
 
         $documents = array();
-        foreach($request->file('documents') as $file)
-        {
-            $name = time().'_'.$file->getClientOriginalName();
-            $file->move(public_path().'/uploads/', $name);
+        foreach ($request->file('documents') as $file) {
+            $name = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path() . '/uploads/', $name);
             $documents[] = $name;
         }
 
         $documents = implode(', ', $documents);
 
-        if (isset($request->labels)){
+        if (isset($request->labels)) {
             $tags = implode(', ', $request->labels);
             unset($customer_data['labels']);
             $customer_data['labels'] = $tags;
-        }
-
-        if (isset($request->ipaddress)){
-            $ipaddress = implode(', ', $request->ipaddress);
-            unset($customer_data['ipaddress']);
-            $customer_data['ipaddress'] = $ipaddress;
         }
 
         $phone = $request['phone']['full'];
@@ -88,7 +82,16 @@ class UserController extends Controller
         $customer_data['documents'] = $documents;
         $customer_data['phone'] = $phone;
         $customer_data['documenttype_id'] = $new_documenttype->id;
-        User::create($customer_data);
+        $user = User::create($customer_data);
+
+        if (isset($request->ipaddress)) {
+            foreach ($request->ipaddress as $ipaddress) {
+                if($ipaddress == '') continue;
+                $user->ipaddress()->create([
+                    'ipaddress' => $ipaddress
+                ]);
+            }
+        }
 
         return back()->with('success', "New customer has been created.");
     }
@@ -96,7 +99,7 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\User  $user
+     * @param \App\Models\User $user
      * @return \Illuminate\Http\Response
      */
     public function show(User $user)
@@ -111,7 +114,7 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\User  $user
+     * @param \App\Models\User $user
      * @return \Illuminate\Http\Response
      */
     public function edit(User $user)
@@ -126,8 +129,8 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\User  $user
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\User $user
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, User $user)
@@ -136,18 +139,17 @@ class UserController extends Controller
         $documenttype_id = $request->documenttype_id;
         $new_documenttype = Documenttype::find($documenttype_id);
 
-        if(!isset($new_documenttype)) {
+        if (!isset($new_documenttype)) {
             $new_documenttype = Documenttype::create([
                 'name' => $documenttype_id
             ]);
         }
 
-        if($request->hasFile('documents')) {
+        if ($request->hasFile('documents')) {
             $documents = array();
-            foreach($request->file('documents') as $file)
-            {
-                $name = time().'_'.$file->getClientOriginalName();
-                $file->move(public_path().'/uploads/', $name);
+            foreach ($request->file('documents') as $file) {
+                $name = time() . '_' . $file->getClientOriginalName();
+                $file->move(public_path() . '/uploads/', $name);
                 $documents[] = $name;
             }
 
@@ -157,31 +159,36 @@ class UserController extends Controller
         }
 
 
-        if (isset($request->labels)){
+        if (isset($request->labels)) {
             $tags = implode(', ', $request->labels);
             unset($customer_data['labels']);
             $customer_data['labels'] = $tags;
-        }
-
-        if (isset($request->ipaddress)){
-            $ipaddress = implode(', ', $request->ipaddress);
-            unset($customer_data['ipaddress']);
-            $customer_data['ipaddress'] = $ipaddress;
         }
 
         $phone = $request['phone']['full'];
         unset($customer_data['phone']);
         $customer_data['phone'] = $phone;
         $customer_data['documenttype_id'] = $new_documenttype->id;
+
+        if (isset($request->ipaddress))
+        {
+            $user->ipaddress()->delete();
+            foreach ($request->ipaddress as $ipaddress) {
+                if($ipaddress == '') continue;
+                $user->ipaddress()->create([
+                    'ipaddress' => $ipaddress
+                ]);
+            }
+        }
         $user->update($customer_data);
 
-        return back()->with('success', "New customer has been updated.");
+        return back()->with('success', "Customer data has been updated.");
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\User  $user
+     * @param \App\Models\User $user
      * @return \Illuminate\Http\Response
      */
     public function destroy(User $user)
@@ -195,19 +202,24 @@ class UserController extends Controller
         if (isset($request->sex)) $customers->where('sex', $request->sex);
         if (isset($request->category_id)) $customers->where('category_id', $request->category_id);
         if (isset($request->documenttype_id)) $customers->where('documenttype_id', $request->documenttype_id);
-        if (isset($request->name)) $customers->where('name', 'like', '%'.$request->name.'%');
-        if (isset($request->address)) $customers->where('address', 'like', '%'.$request->address.'%');
+        if (isset($request->name)) $customers->where('name', 'like', '%' . $request->name . '%');
+        if (isset($request->address)) $customers->where('address', 'like', '%' . $request->address . '%');
         if (isset($request->DOB)) $customers->where('DOB', $request->DOB);
-        if (isset($request->phone)) $customers->where('phone', 'like', '%'.$request->phone.'%');
+        if (isset($request->phone)) $customers->where('phone', 'like', '%' . $request->phone . '%');
         if (isset($request->email)) $customers->where('email', $request->email);
         if (isset($request->line_id)) $customers->where('line_id', $request->line_id);
         if (isset($request->facebook_id)) $customers->where('facebook_id', $request->facebook_id);
         if (isset($request->twitter_id)) $customers->where('twitter_id', $request->twitter_id);
         if (isset($request->telegram_id)) $customers->where('telegram_id', $request->telegram_id);
         if (isset($request->youtube_id)) $customers->where('youtube_id', $request->youtube_id);
-        if (isset($request->ipaddress)) $customers->where('ipaddress', 'like', '%'.$request->ipaddress.'%');
+        if (isset($request->ipaddress)) $customers->where('ipaddress', 'like', '%' . $request->ipaddress . '%');
         $customers->with('documenttype')->with('category');
         $customers = $customers->get();
+        foreach ($customers as $key => $customer) {
+            $ipaddress = implode(', ', $customer->ipaddress->pluck('ipaddress')->toArray());
+            unset($customers[$key]['ipaddress']);
+            $customers[$key]['ipaddress'] = $ipaddress;
+        }
         return response()->json($customers);
     }
 
@@ -216,6 +228,11 @@ class UserController extends Controller
         $customers = User::where('id', '>', 1);
         $customers->with('documenttype')->with('category');
         $customers = $customers->get();
+        foreach ($customers as $key => $customer) {
+            $ipaddress = implode(', ', $customer->ipaddress->pluck('ipaddress')->toArray());
+            unset($customers[$key]['ipaddress']);
+            $customers[$key]['ipaddress'] = $ipaddress;
+        }
         return response()->json($customers);
     }
 }

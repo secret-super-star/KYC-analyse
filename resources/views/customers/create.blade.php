@@ -198,7 +198,7 @@
                                         <div class="col-xl-4 col-lg-6 col-6">
                                             <div class="form-group ipmessages mb-0">
                                                 <label for="">Ip Address</label>
-                                                <div class="input-group mb-0 ipaddress">
+                                                <div class="input-group mb-0 ipaddress" hidden>
                                                     <input type="text" name="ipaddress[]"
                                                            class="form-control form-control-sm "
                                                            data-inputmask="'alias': 'ip'" data-mask=""
@@ -320,7 +320,7 @@
             })
 
             $('.addnewip').click(function () {
-                let clone_object = $('.ipaddress').clone().removeClass('ipaddress');
+                let clone_object = $('.ipaddress').clone().removeClass('ipaddress').removeAttr('hidden');
                 $(clone_object).find('input').val('').inputmask();
                 $('.ipmessages').append(clone_object);
             })

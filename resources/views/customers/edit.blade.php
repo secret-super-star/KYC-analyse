@@ -199,8 +199,17 @@
                                         <div class="col-xl-4 col-lg-6 col-6">
                                             <div class="form-group ipmessages mb-0">
                                                 <label for="">Ip Address</label>
-                                                @foreach(explode(', ', $customer->ipaddress) as $key=>$ipaddress)
-                                                    <div class="input-group mb-0 {!! $key == 0 ? 'ipaddress':'' !!}">
+                                                <div class="input-group mb-0 ipaddress" hidden>
+                                                    <input type="text" name="ipaddress[]"
+                                                           class="form-control form-control-sm "
+                                                           data-inputmask="'alias': 'ip'" data-mask=""
+                                                           im-insert="true" ">
+                                                    <div class="input-group-append remove-item">
+                                                        <span class="input-group-text"><i class="fas fa-times"></i></span>
+                                                    </div>
+                                                </div>
+                                                @foreach($customer->ipaddress->pluck('ipaddress') as $key=>$ipaddress)
+                                                    <div class="input-group mb-0">
                                                         <input type="text" name="ipaddress[]"
                                                                class="form-control form-control-sm "
                                                                data-inputmask="'alias': 'ip'" data-mask=""
@@ -219,7 +228,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="card" hidden>
+                            <div class="card">
                                 <div class="card-header">
                                     Customer Document:
                                 </div>
@@ -323,7 +332,7 @@
             })
 
             $('.addnewip').click(function () {
-                let clone_object = $('.ipaddress').clone().removeClass('ipaddress');
+                let clone_object = $('.ipaddress').clone().removeClass('ipaddress').removeAttr('hidden');
                 $(clone_object).find('input').val('').inputmask();
                 $('.ipmessages').append(clone_object);
             })

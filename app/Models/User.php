@@ -31,7 +31,6 @@ class User extends Authenticatable
         'youtube_id',
         'documenttype_id',
         'documents',
-        'ipaddress',
         'category_id',
         'note',
         'labels',
@@ -74,5 +73,10 @@ class User extends Authenticatable
     public function notes()
     {
         return $this->hasMany('App\Models\Customernote');
+    }
+
+    public function ipaddress()
+    {
+        return $this->hasMany('App\Models\Ipaddress');
     }
 }

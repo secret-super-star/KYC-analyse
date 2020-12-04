@@ -220,7 +220,9 @@
                                         <td>{{$customer->telegram_id}}</td>
                                         <td>{{$customer->youtube_id}}</td>
                                         <td>{{$customer->documenttype->name}}</td>
-                                        <td>{{$customer->ipaddress}}</td>
+                                        <td>
+                                            {{ implode(', ', $customer->ipaddress->pluck('ipaddress')->toArray() ) }}
+                                        </td>
                                         <td>{{$customer->category->name}}</td>
                                         <td>
                                             <a class="btn btn-sm btn-success" href="{{ route('users.show', $customer->id) }}">

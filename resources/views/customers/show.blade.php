@@ -152,7 +152,7 @@
                                         <strong><i class="fa fa-network-wired mr-1"></i> Ip Address</strong>
 
                                         <p class="text-muted">
-                                            {{$customer->ipaddress ?? "-"}}
+                                            {{ implode(' | ', $customer->ipaddress->pluck('ipaddress')->toArray()) }}
                                         </p>
                                     </div>
                                 </div>
