@@ -11,6 +11,10 @@
         .bootstrap-tagsinput .badge {
             margin-right: 5px;
         }
+
+        .addnewip {
+            cursor: pointer;
+        }
     </style>
 @endsection
 
@@ -181,10 +185,13 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="col-md-6">
+                                                <div class="col-md-3">
                                                     <div class="form-group">
                                                         <label for="customer_ip_address">Ip Address</label>
                                                         <input type="text" id="customer_ip_address" name="ipaddress" class="form-control" data-inputmask="'alias': 'ip'" data-mask="" im-insert="true">
+                                                        <span class="badge badge-primary addnewip">
+                                                            Add new +
+                                                        </span>
                                                     </div>
                                                 </div>
                                             </div>

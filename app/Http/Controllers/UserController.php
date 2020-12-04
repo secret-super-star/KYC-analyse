@@ -70,13 +70,16 @@ class UserController extends Controller
 
         $documents = implode(', ', $documents);
 
-        $tags = implode(', ', $request->labels);
+        if (isset($request->labels)){
+            $tags = implode(', ', $request->labels);
+            unset($customer_data['labels']);
+            $customer_data['labels'] = $tags;
+        }
+
         $phone = $request['phone']['full'];
         unset($customer_data['documents']);
-        unset($customer_data['labels']);
         unset($customer_data['phone']);
         $customer_data['documents'] = $documents;
-        $customer_data['labels'] = $tags;
         $customer_data['phone'] = $phone;
         $customer_data['documenttype_id'] = $new_documenttype->id;
         User::create($customer_data);
