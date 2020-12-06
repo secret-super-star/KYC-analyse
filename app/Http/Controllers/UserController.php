@@ -245,4 +245,16 @@ class UserController extends Controller
         }
         return response()->json($customers);
     }
+
+    public function getusers(){
+        $users = User::all()->except(1);
+        foreach ($users as $user) {
+            $user['title'] = $user->name.' - Birthday';
+            $user['start'] = $user->DOB;
+            $user['allDay'] = true;
+            $user['backgroundColor'] = '#00a65a';
+            $user['borderColor'] = '#00a65a';
+        }
+        return response()->json($users);
+    }
 }
