@@ -34,3 +34,4 @@ Route::resource('bonus', App\Http\Controllers\BonusController::class);
 Route::resource('notes', App\Http\Controllers\CustomernoteController::class);
 
 Route::get('getusers', [App\Http\Controllers\UserController::class, 'getusers'])->name('getusers');
+

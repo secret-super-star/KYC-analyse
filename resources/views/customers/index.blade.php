@@ -411,7 +411,7 @@
                                 <a class="btn btn-sm btn-success" href="/users/` + data[i]['id'] + `">
                                     View <i class="fa fa-eye"></i>
                                 </a>
-                                <a class="btn btn-sm btn-warning" href="/users/edit/` + data[i]['id'] + `">
+                                <a class="btn btn-sm btn-warning" href="/users/` + data[i]['id'] + `/edit">
                                     Edit <i class="fa fa-pen"></i>
                                 </a>
                                 <a class="btn btn-sm btn-danger" href="/users/` + data[i]['id'] + `">

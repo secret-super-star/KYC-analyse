@@ -2,6 +2,8 @@
 @section('title', 'Show Customer')
 @section('styles')
     <link rel="stylesheet" href="{{asset('plugins/ekko-lightbox/ekko-lightbox.css')}}">
+    <link rel="stylesheet" href="{{asset('plugins/datatables-bs4/css/dataTables.bootstrap4.min.css')}}">
+    <link rel="stylesheet" href="{{asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css')}}">
     <style>
         .id_documents img {
             max-width: 100px;
@@ -327,8 +329,14 @@
 
 @section('scripts')
     <script src="{{asset('plugins/ekko-lightbox/ekko-lightbox.min.js')}}"></script>
+    <script src="{{asset('plugins/datatables/jquery.dataTables.min.js')}}"></script>
+    <script src="{{asset('plugins/datatables-bs4/js/dataTables.bootstrap4.min.js')}}"></script>
     <script>
         $(function () {
+
+            $("table").DataTable({
+            });
+
             $(document).on('click', '[data-toggle="lightbox"]', function (event) {
                 event.preventDefault();
                 $(this).ekkoLightbox({
