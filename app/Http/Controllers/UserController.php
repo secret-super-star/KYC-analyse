@@ -222,15 +222,30 @@ class UserController extends Controller
         if (isset($request->twitter_id)) $customers->where('twitter_id', $request->twitter_id);
         if (isset($request->telegram_id)) $customers->where('telegram_id', $request->telegram_id);
         if (isset($request->youtube_id)) $customers->where('youtube_id', $request->youtube_id);
-        if (isset($request->ipaddress)) $customers->where('ipaddress', 'like', '%' . $request->ipaddress . '%');
+
+        $ipaddress = $request->ipaddress;
+        unset($ipaddress[0]);
         $customers->with('documenttype')->with('category');
         $customers = $customers->get();
+        $filtered = array();
         foreach ($customers as $key => $customer) {
-            $ipaddress = implode(', ', $customer->ipaddress->pluck('ipaddress')->toArray());
-            unset($customers[$key]['ipaddress']);
-            $customers[$key]['ipaddress'] = $ipaddress;
+            $customer_ipaddress = $customer->ipaddress->pluck('ipaddress')->toArray();
+            if(!empty($ipaddress)) {
+//                $result = !empty(array_intersect($ipaddress, $customer_ipaddress));
+                $result = count(array_intersect($ipaddress, $customer_ipaddress)) == count($ipaddress);
+                if($result) {
+                    unset($customers[$key]['ipaddress']);
+                    $customers[$key]['ipaddress'] = implode(', ', $customer_ipaddress);
+                    $filtered[] = $customers[$key];
+                }
+            } else {
+                unset($customers[$key]['ipaddress']);
+                $customers[$key]['ipaddress'] = implode(', ', $customer_ipaddress);
+                $filtered[] = $customers[$key];
+            }
         }
-        return response()->json($customers);
+
+        return response()->json($filtered);
     }
 
     public function searchall(Request $request)

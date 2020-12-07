@@ -3,3 +3,11 @@
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
     .iti__flag {background-image: url("./plugins/intl-tel-input/img/flags@2x.png");}
 }
+
+.bootstrap-tagsinput .badge {
+    margin-right: 5px;
+}
+
+.addnewip {
+    cursor: pointer;
+}

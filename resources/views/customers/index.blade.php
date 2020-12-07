@@ -192,14 +192,29 @@
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-2">
-                                                                <div class="form-group">
-                                                                    <label for="customer_ip_address">Ip Address</label>
-                                                                    <input type="text" name="ipaddress"
-                                                                           id="customer_ip_address"
-                                                                           data-inputmask="'alias': 'ip'" data-mask=""
-                                                                           im-insert="true"
-                                                                           class="form-control form-control-sm">
+{{--                                                                <div class="form-group">--}}
+{{--                                                                    <label for="customer_ip_address">Ip Address</label>--}}
+{{--                                                                    <input type="text" name="ipaddress"--}}
+{{--                                                                           id="customer_ip_address"--}}
+{{--                                                                           data-inputmask="'alias': 'ip'" data-mask=""--}}
+{{--                                                                           im-insert="true"--}}
+{{--                                                                           class="form-control form-control-sm">--}}
+{{--                                                                </div>--}}
+                                                                <div class="form-group ipmessages mb-0">
+                                                                    <label for="">Ip Address</label>
+                                                                    <div class="input-group mb-0 ipaddress" hidden>
+                                                                        <input type="text" name="ipaddress[]"
+                                                                               class="form-control form-control-sm "
+                                                                               data-inputmask="'alias': 'ip'" data-mask=""
+                                                                               im-insert="true">
+                                                                        <div class="input-group-append remove-item">
+                                                                            <span class="input-group-text"><i class="fas fa-times"></i></span>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
+                                                                <span class="badge badge-primary addnewip">
+                                                            Add new +
+                                                    </span>
                                                             </div>
 
                                                             <div class="col-md-12">
@@ -328,8 +343,6 @@
     <script src="{{asset('plugins/datatables-buttons/js/buttons.flash.min.js')}}"></script>
     <script src="{{asset('plugins/datatables-buttons/js/buttons.html5.min.js')}}"></script>
     <script src="{{asset('plugins/datatables-buttons/js/buttons.print.min.js')}}"></script>
-    <script src="{{asset('plugins/datatables-buttons/js/pdfmake.min.js')}}"></script>
-    <script src="{{asset('plugins/datatables-buttons/js/vfs_fonts.js')}}"></script>
     <script src="{{asset('plugins/datatables-bs4/js/dataTables.bootstrap4.min.js')}}"></script>
     <script src="{{asset('plugins/datatables-responsive/js/dataTables.responsive.min.js')}}"></script>
     <script src="{{asset('plugins/datatables-responsive/js/responsive.bootstrap4.min.js')}}"></script>
@@ -343,6 +356,14 @@
 
             $('[data-mask]').inputmask()
 
+            var phone_input = document.querySelector("#customer_phone");
+            var iti = window.intlTelInput(phone_input, {
+                hiddenInput: "full",
+                utilsScript: "/plugins/intl-tel-input/js/utils.js?1603274336113"
+            });
+
+            iti.setCountry("us");
+
             function drawdatatable() {
                 return $("#customer_table").DataTable({
                     dom: 'Bfrtip',
@@ -350,15 +371,6 @@
                     buttons: [
                         {
                             extend: 'csv',
-                            footer: false,
-                            exportOptions: {
-                                columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
-                            }
-                        },
-                        {
-                            extend: 'pdf',
-                            orientation: 'landscape',
-                            pageSize: 'LEGAL',
                             footer: false,
                             exportOptions: {
                                 columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
@@ -399,7 +411,7 @@
                                 <a class="btn btn-sm btn-success" href="/users/` + data[i]['id'] + `">
                                     View <i class="fa fa-eye"></i>
                                 </a>
-                                <a class="btn btn-sm btn-warning" href="/users/` + data[i]['id'] + `">
+                                <a class="btn btn-sm btn-warning" href="/users/edit/` + data[i]['id'] + `">
                                     Edit <i class="fa fa-pen"></i>
                                 </a>
                                 <a class="btn btn-sm btn-danger" href="/users/` + data[i]['id'] + `">
@@ -409,6 +421,8 @@
                         txt += "</tr>";
                     }
 
+                    console.log(txt);
+
                     $('#customer_table tbody').html(txt);
                     datatable = drawdatatable()
                 } else {
@@ -417,6 +431,7 @@
             }
 
             $('.clear-filter').click(function (e) {
+                $('.clone').remove();
                 let form_data = $('#filter_form').serialize();
 
                 $.ajax({
@@ -430,15 +445,29 @@
 
             $('#filter_form').submit(function (e) {
                 e.preventDefault()
+                var number = iti.getNumber();
                 let form_data = $(this).serialize();
-
                 $.ajax({
                     type: "POST",
                     url: '{{route('searchcustomers')}}',
-                    data: form_data,
+                    data: form_data + '&=phone' + number,
+                    dataType: 'json'
                 }).done(function (res) {
                     drawtable(res);
                 });
+            })
+
+            $('.addnewip').click(function () {
+                let clone_object = $('.ipaddress').clone().removeClass('ipaddress').removeAttr('hidden').addClass('clone');
+                $(clone_object).find('input').val('').inputmask();
+                $('.ipmessages').append(clone_object);
+            })
+
+            $(document).on('click', '.remove-item', function () {
+                let parent = $(this).parent();
+                if(!$(parent).hasClass('ipaddress')) {
+                    $(parent).remove();
+                }
             })
 
 

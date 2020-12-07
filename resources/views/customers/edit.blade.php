@@ -7,15 +7,6 @@
     <link rel="stylesheet" href="{{asset('plugins/toastr/toastr.min.css')}}">
     <link rel="stylesheet" href="{{asset('plugins/intl-tel-input/css/intlTelInput.min.css')}}">
 
-    <style>
-        .bootstrap-tagsinput .badge {
-            margin-right: 5px;
-        }
-
-        .addnewip {
-            cursor: pointer;
-        }
-    </style>
 @endsection
 
 @section('content')
